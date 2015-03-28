@@ -7,7 +7,7 @@ using Steamworks;
 
 namespace Uconomy_Extension
 {
-    class CommandExchange : IRocketCommand
+    public class CommandExchange : IRocketCommand
     {
         public bool RunFromConsole
         {
@@ -30,7 +30,7 @@ namespace Uconomy_Extension
                 return "Exchanges experience for economy currency.";
             }
         }
-        protected override void Execute(CSteamID playerid, string amt)
+        public void Execute(CSteamID playerid, string amt)
         {
             if (!Uconomy_Extension.Instance.Configuration.ExpExchange)
             {
