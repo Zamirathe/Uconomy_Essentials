@@ -7,7 +7,7 @@ using Steamworks;
 
 namespace Uconomy_Extension
 {
-    class CommandExchange : Command
+    class CommandExchange : IRocketCommand
     {
         public bool RunFromConsole
         {
