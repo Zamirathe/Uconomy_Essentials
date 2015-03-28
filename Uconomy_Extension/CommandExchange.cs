@@ -3,49 +3,63 @@ using Rocket.RocketAPI;
 using Rocket.Logging;
 using unturned.ROCKS.Uconomy;
 using SDG;
+using Steamworks;
 
 namespace Uconomy_Extension
 {
     class CommandExchange : Command
     {
-        public CommandExchange()
+        public bool RunFromConsole
         {
-            this.commandName = "exchange";
-            this.commandHelp = "Exchanges experience for economy currency.";
-            this.commandInfo = this.commandName + " - " + this.commandHelp;
+            get
+            {
+                return false;
+            }
         }
-
-        protected override void execute(SteamPlayerID playerid, string amt)
+        public string Name
         {
-            if (!RocketCommand.IsPlayer(playerid)) return;
+            get
+            {
+                return "exchange";
+            }
+        }
+        public string Help
+        {
+            get
+            {
+                return "Exchanges experience for economy currency.";
+            }
+        }
+        protected override void Execute(CSteamID playerid, string amt)
+        {
             if (!Uconomy_Extension.Instance.Configuration.ExpExchange)
             {
-                RocketChatManager.Say(playerid.CSteamID, "I'm sorry, experience exchange is not available.  Ask your admin to enable it.");
+                RocketChatManager.Say(playerid, "I'm sorry, experience exchange is not available.  Ask your admin to enable it.");
                 return;
             }
-            SteamPlayer player = PlayerTool.getSteamPlayer(playerid.CSteamID);
+            Player p = PlayerTool.getPlayer(playerid);
             // Get expereience balance first
-            uint exp = player.Player.Skills.Experience;
+            uint exp = p.Skills.Experience;
             uint examt = 0;
             UInt32.TryParse(amt, out examt);
             if (examt <= 0)
             {
-                RocketChatManager.Say(playerid.CSteamID, "You have to enter an amount of experience to exchange.");
+                RocketChatManager.Say(playerid, "You have to enter an amount of experience to exchange.");
                 return;
             }
             if (exp < examt)
             {
-                RocketChatManager.Say(playerid.CSteamID, "You don't have " + examt.ToString() + " exprience.");
+                RocketChatManager.Say(playerid, "You don't have " + examt.ToString() + " exprience.");
                 return;
             }
             // Get experience balance first
-            decimal bal = Uconomy.Instance.Database.GetBalance(playerid.CSteamID);
+            decimal bal = Uconomy.Instance.Database.GetBalance(playerid);
             decimal gain = (decimal)((float)examt * Uconomy_Extension.Instance.Configuration.ExpExchangerate);
             // Just to make sure to avoid any errors
             gain = Decimal.Round(gain, 2);
-            decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID, gain);
-            RocketChatManager.Say(playerid.CSteamID, String.Format(Uconomy_Extension.Instance.Configuration.NewBalanceMsg, newbal.ToString(), Uconomy.Instance.Configuration.MoneyName));
-            player.Player.Skills.Experience -= examt;
+            decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid, gain);
+            RocketChatManager.Say(playerid, String.Format(Uconomy_Extension.Instance.Configuration.NewBalanceMsg, newbal.ToString(), Uconomy.Instance.Configuration.MoneyName));
+            p.Skills.Experience -= examt;
         }
     }
 }

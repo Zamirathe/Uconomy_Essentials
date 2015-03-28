@@ -28,11 +28,14 @@ namespace Uconomy_Extension
             if (killer == null) return;
             if (this.config.PayHit)
             {
+                decimal bal = Uconomy.Instance.Database.GetBalance(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID);
                 if (cause == EDeathCause.SUICIDE && this.config.LoseSuicide)
                 {
                     // We are going to remove currency for the suicide
                     Uconomy u1 = Uconomy.Instance;
-                    decimal bal1 = u1.Database.IncreaseBalance(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, (decimal)this.config.LoseSuicideAmt*-1.0m);
+                    decimal loss = (decimal)this.config.LoseSuicideAmt * -1.0m;
+                    if (bal + loss < 0.0m) loss = bal * -1.0m;
+                    decimal bal1 = u1.Database.IncreaseBalance(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, loss);
                     RocketChatManager.Say(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(this.config.LoseSuicideMsg, this.config.LoseSuicideAmt, Uconomy.Instance.Configuration.MoneyName));
                     if (bal1 != 0m) RocketChatManager.Say(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(this.config.NewBalanceMsg, bal1, Uconomy.Instance.Configuration.MoneyName));
                     return;
@@ -45,14 +48,16 @@ namespace Uconomy_Extension
                 if (Uconomy_Extension.Instance.Configuration.LoseMoneyOnDeath)
                 {
                     Uconomy u2 = Uconomy.Instance;
-                    decimal lostbal = u2.Database.IncreaseBalance(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, (decimal)this.config.LoseMoneyOnDeathAmt * -1.0m);
+                    decimal loss = (decimal)this.config.LoseMoneyOnDeathAmt * -1.0m;
+                    if (bal + loss < 0.0m) loss = bal * -1.0m;
+                    decimal lostbal = u2.Database.IncreaseBalance(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, loss);
                     RocketChatManager.Say(player.SteamChannel.SteamPlayer.SteamPlayerID.CSteamID, String.Format(this.config.LoseMoneyonDeathMsg, this.config.LoseMoneyOnDeathAmt.ToString(), u2.Configuration.MoneyName));
                 }
                 // Pay the other player for the kill
                 Uconomy u = Uconomy.Instance;
-                decimal bal = u.Database.IncreaseBalance(murderer, (decimal)this.config.PayHitAmt);
+                decimal balk = u.Database.IncreaseBalance(murderer, (decimal)this.config.PayHitAmt);
                 RocketChatManager.Say(murderer, String.Format(this.config.ToKillerMsg, this.config.PayHitAmt, Uconomy.Instance.Configuration.MoneyName, player.SteamChannel.SteamPlayer.SteamPlayerID.CharacterName));
-                if (bal != 0m) RocketChatManager.Say(murderer, String.Format(this.config.NewBalanceMsg, bal, Uconomy.Instance.Configuration.MoneyName));
+                if (bal != 0m) RocketChatManager.Say(murderer, String.Format(this.config.NewBalanceMsg, balk, Uconomy.Instance.Configuration.MoneyName));
             }
         }
     }
