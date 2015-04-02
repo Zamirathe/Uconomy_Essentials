@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Rocket.RocketAPI;
 
 namespace Uconomy_Essentials
@@ -6,9 +7,10 @@ namespace Uconomy_Essentials
     public class UconomyEConfiguration : RocketConfiguration
     {
         public bool PayTime;
-        public float PayTimeAmt;
+        public List<Group> PayGroups;
         public ushort PayTimeSeconds;
         public string PayTimeMsg;
+        public string UnableToPayGroupMsg;
         public bool PayHit;
         public float PayHitAmt;
         public string ToKillerMsg;
@@ -30,9 +32,15 @@ namespace Uconomy_Essentials
                 return new UconomyEConfiguration()
                 {
                     PayTime = false,
-                    PayTimeAmt = 1.0f,
+                    PayGroups = new List<Group>() {
+                        new Group{DisplayName = "all", Salary = 1.0m},
+                        new Group{DisplayName = "admin", Salary = 5.0m},
+                        new Group{DisplayName = "moderator", Salary = 4.0m},
+                        new Group{DisplayName = "guest", Salary = 1.0m}
+                    },
                     PayTimeSeconds = 900,
-                    PayTimeMsg = "You have received {0} {1} in salary.",
+                    PayTimeMsg = "You have received {0} {1} in salary for being a {2}.",
+                    UnableToPayGroupMsg = "Unable to pay {0} as no {1} group salary set.",
                     PayHit = false,
                     PayHitAmt = 1.0f,
                     ToKillerMsg = "You have received {0} {1} for killing {2}.",

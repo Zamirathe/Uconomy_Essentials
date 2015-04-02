@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Rocket.RocketAPI;
+using Rocket.Logging;
 using SDG;
 using unturned.ROCKS.Uconomy;
 
@@ -8,24 +10,17 @@ namespace Uconomy_Essentials
 {
     public class Uconomy_Essentials : RocketPlugin<UconomyEConfiguration>
     {
-        private DateTime lastpaid;
         public static Uconomy_Essentials Instance;
+        public Dictionary<string, decimal> PayGroups = new Dictionary<string,decimal>();
 
         protected override void Load() {
-            this.lastpaid = DateTime.Now;
             Uconomy_Essentials.Instance = this;
-        }
-        private void FixedUpdate()
-        {
-            if (Uconomy_Essentials.Instance.Configuration.PayTime && (DateTime.Now - this.lastpaid).TotalSeconds >= Uconomy_Essentials.Instance.Configuration.PayTimeSeconds)
+            if (Loaded)
             {
-                foreach (SteamPlayer pl in PlayerTool.getSteamPlayers())
+                foreach (Group g in this.Configuration.PayGroups)
                 {
-                    decimal bal = Uconomy.Instance.Database.IncreaseBalance(pl.SteamPlayerID.CSteamID, (decimal)Uconomy_Essentials.Instance.Configuration.PayTimeAmt);
-                    RocketChatManager.Say(pl.SteamPlayerID.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.PayTimeMsg, Uconomy_Essentials.Instance.Configuration.PayTimeAmt, Uconomy.Instance.Configuration.MoneyName));
-                    if (bal != null) RocketChatManager.Say(pl.SteamPlayerID.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.NewBalanceMsg, bal, Uconomy.Instance.Configuration.MoneyName));
+                    this.PayGroups.Add(g.DisplayName, g.Salary);
                 }
-                this.lastpaid = DateTime.Now;
             }
         }
     }

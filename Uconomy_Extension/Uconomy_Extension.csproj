@@ -61,7 +61,7 @@
   <ItemGroup>
     <Compile Include="CommandExchange.cs" />
     <Compile Include="Group.cs" />
-    <Compile Include="PlayerDeath.cs" />
+    <Compile Include="PlayerUE.cs" />
     <Compile Include="UconomyEConfiguration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Uconomy_Essentials.cs" />
