@@ -5,7 +5,7 @@ using unturned.ROCKS.Uconomy;
 using SDG;
 using Steamworks;
 
-namespace Uconomy_Extension
+namespace Uconomy_Essentials
 {
     public class CommandExchange : IRocketCommand
     {
@@ -32,7 +32,7 @@ namespace Uconomy_Extension
         }
         public void Execute(CSteamID playerid, string amt)
         {
-            if (!Uconomy_Extension.Instance.Configuration.ExpExchange)
+            if (!Uconomy_Essentials.Instance.Configuration.ExpExchange)
             {
                 RocketChatManager.Say(playerid, "I'm sorry, experience exchange is not available.  Ask your admin to enable it.");
                 return;
@@ -54,12 +54,16 @@ namespace Uconomy_Extension
             }
             // Get experience balance first
             decimal bal = Uconomy.Instance.Database.GetBalance(playerid);
-            decimal gain = (decimal)((float)examt * Uconomy_Extension.Instance.Configuration.ExpExchangerate);
+            decimal gain = (decimal)((float)examt * Uconomy_Essentials.Instance.Configuration.ExpExchangerate);
             // Just to make sure to avoid any errors
             gain = Decimal.Round(gain, 2);
             decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid, gain);
-            RocketChatManager.Say(playerid, String.Format(Uconomy_Extension.Instance.Configuration.NewBalanceMsg, newbal.ToString(), Uconomy.Instance.Configuration.MoneyName));
+            RocketChatManager.Say(playerid, String.Format(Uconomy_Essentials.Instance.Configuration.NewBalanceMsg, newbal.ToString(), Uconomy.Instance.Configuration.MoneyName));
             p.Skills.Experience -= examt;
+            p.SteamChannel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
+		    {
+			    p.Skills.Experience
+		    });
         }
     }
 }

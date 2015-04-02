@@ -1,7 +1,7 @@
 ﻿using System;
 using Rocket.RocketAPI;
 
-namespace Uconomy_Extension
+namespace Uconomy_Essentials
 {
     public class UconomyEConfiguration : RocketConfiguration
     {

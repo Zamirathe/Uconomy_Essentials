@@ -8,7 +8,7 @@ using UnityEngine;
 using Steamworks;
 using unturned.ROCKS.Uconomy;
 
-namespace Uconomy_Extension
+namespace Uconomy_Essentials
 {
     public class PlayerDeath : RocketPlayerComponent
     {
@@ -18,7 +18,7 @@ namespace Uconomy_Extension
         private void Start()
         {
             this.rpe = base.gameObject.transform.GetComponent<RocketPlayerEvents>();
-            this.config = Uconomy_Extension.Instance.Configuration;
+            this.config = Uconomy_Essentials.Instance.Configuration;
             this.rpe.OnDeath += new RocketPlayerEvents.PlayerDeath(this.rpe_OnPlayerDeath);
         }
         private void rpe_OnPlayerDeath(Player player, EDeathCause cause, ELimb limb, CSteamID murderer)
@@ -46,7 +46,7 @@ namespace Uconomy_Extension
                     // We do nothing if they suicide.
                     return;
                 }
-                if (Uconomy_Extension.Instance.Configuration.LoseMoneyOnDeath)
+                if (Uconomy_Essentials.Instance.Configuration.LoseMoneyOnDeath)
                 {
                     decimal loss = (decimal)this.config.LoseMoneyOnDeathAmt * -1.0m;
                     if (bal + loss < 0.0m) loss = bal * -1.0m;

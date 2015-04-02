@@ -7,8 +7,8 @@
     <ProjectGuid>{717C244E-28E8-48B5-B4C2-5C739F8348FE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Uconomy_Extension</RootNamespace>
-    <AssemblyName>Uconomy_Extension</AssemblyName>
+    <RootNamespace>Uconomy_Essentials</RootNamespace>
+    <AssemblyName>Uconomy_Essentials</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -60,10 +60,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandExchange.cs" />
+    <Compile Include="Group.cs" />
     <Compile Include="PlayerDeath.cs" />
     <Compile Include="UconomyEConfiguration.cs" />
-    <Compile Include="Uconomy_Extension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Uconomy_Essentials.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
