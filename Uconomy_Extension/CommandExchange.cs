@@ -30,16 +30,15 @@ namespace Uconomy_Essentials
                 return "Exchanges experience for economy currency.";
             }
         }
-        public void Execute(CSteamID playerid, string amt)
+        public void Execute(RocketPlayer playerid, string amt)
         {
             if (!Uconomy_Essentials.Instance.Configuration.ExpExchange)
             {
                 RocketChatManager.Say(playerid, "I'm sorry, experience exchange is not available.  Ask your admin to enable it.");
                 return;
             }
-            Player p = PlayerTool.getPlayer(playerid);
             // Get expereience balance first
-            uint exp = p.Skills.Experience;
+            uint exp = playerid.Experience;
             uint examt = 0;
             UInt32.TryParse(amt, out examt);
             if (examt <= 0)
@@ -53,17 +52,13 @@ namespace Uconomy_Essentials
                 return;
             }
             // Get experience balance first
-            decimal bal = Uconomy.Instance.Database.GetBalance(playerid);
+            decimal bal = Uconomy.Instance.Database.GetBalance(playerid.CSteamID);
             decimal gain = (decimal)((float)examt * Uconomy_Essentials.Instance.Configuration.ExpExchangerate);
             // Just to make sure to avoid any errors
             gain = Decimal.Round(gain, 2);
-            decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid, gain);
+            decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID, gain);
             RocketChatManager.Say(playerid, String.Format(Uconomy_Essentials.Instance.Configuration.NewBalanceMsg, newbal.ToString(), Uconomy.Instance.Configuration.MoneyName));
-            p.Skills.Experience -= examt;
-            p.SteamChannel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
-		    {
-			    p.Skills.Experience
-		    });
+            playerid.Experience -= examt;
         }
     }
 }
