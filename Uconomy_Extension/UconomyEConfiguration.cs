@@ -23,6 +23,8 @@ namespace Uconomy_Essentials
         public bool LoseMoneyOnDeath;
         public float LoseMoneyOnDeathAmt;
         public string LoseMoneyonDeathMsg;
+        public string APayMsg;
+        public string APaidMsg;
 
 
         public RocketConfiguration DefaultConfiguration
@@ -52,7 +54,9 @@ namespace Uconomy_Essentials
                     NewBalanceMsg = "Your new balance is {0} {1}.",
                     LoseMoneyOnDeath = false,
                     LoseMoneyOnDeathAmt = 10.0f,
-                    LoseMoneyonDeathMsg = "You have lost {0} {1} for being killed."
+                    LoseMoneyonDeathMsg = "You have lost {0} {1} for being killed.",
+                    APayMsg = "You have paid {0} {1} {2}.",
+                    APaidMsg = "{0} gave you {1} {2}. You now have {3} {4}."
                 };
             }
         }

@@ -59,6 +59,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandApay.cs" />
     <Compile Include="CommandExchange.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="PlayerUE.cs" />

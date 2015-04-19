@@ -59,6 +59,7 @@ namespace Uconomy_Essentials
             decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID, gain);
             RocketChatManager.Say(playerid, String.Format(Uconomy_Essentials.Instance.Configuration.NewBalanceMsg, newbal.ToString(), Uconomy.Instance.Configuration.MoneyName));
             playerid.Experience -= examt;
+            Uconomy_Essentials.HandleEvent(playerid, gain, "exchange", examt);
         }
     }
 }

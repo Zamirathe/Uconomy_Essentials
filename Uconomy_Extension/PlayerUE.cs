@@ -16,7 +16,7 @@ namespace Uconomy_Essentials
         private DateTime lastpaid;
         private RocketPlayerEvents rpe;
 
-        private void Start()
+        protected void Load()
         {
             this.rpe = base.gameObject.transform.GetComponent<RocketPlayerEvents>();
             this.lastpaid = DateTime.Now;
@@ -38,6 +38,7 @@ namespace Uconomy_Essentials
                     decimal loss = (decimal)Uconomy_Essentials.Instance.Configuration.LoseSuicideAmt * -1.0m;
                     if (bal + loss < 0.0m) loss = bal * -1.0m;
                     decimal bal1 = u.Database.IncreaseBalance(player.CSteamID, loss);
+                    Uconomy_Essentials.HandleEvent(player, loss, "loss");
                     RocketChatManager.Say(player.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.LoseSuicideMsg, Uconomy_Essentials.Instance.Configuration.LoseSuicideAmt, u.Configuration.MoneyName));
                     if (bal1 != 0m) RocketChatManager.Say(player.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.NewBalanceMsg, bal1, u.Configuration.MoneyName));
                     return;
@@ -52,10 +53,12 @@ namespace Uconomy_Essentials
                     decimal loss = (decimal)Uconomy_Essentials.Instance.Configuration.LoseMoneyOnDeathAmt * -1.0m;
                     if (bal + loss < 0.0m) loss = bal * -1.0m;
                     decimal lostbal = u.Database.IncreaseBalance(player.CSteamID, loss);
+                    Uconomy_Essentials.HandleEvent(player, loss, "loss");
                     RocketChatManager.Say(player.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.LoseMoneyonDeathMsg, Uconomy_Essentials.Instance.Configuration.LoseMoneyOnDeathAmt.ToString(), u.Configuration.MoneyName));
                 }
                 // Pay the other player for the kill
                 decimal balk = u.Database.IncreaseBalance(murderer, (decimal)Uconomy_Essentials.Instance.Configuration.PayHitAmt);
+                Uconomy_Essentials.HandleEvent(player, (decimal)Uconomy_Essentials.Instance.Configuration.PayHitAmt, "paid");
                 RocketChatManager.Say(murderer, String.Format(Uconomy_Essentials.Instance.Configuration.ToKillerMsg, Uconomy_Essentials.Instance.Configuration.PayHitAmt.ToString(), u.Configuration.MoneyName, player.CharacterName));
                 if (bal != 0m) RocketChatManager.Say(murderer, String.Format(Uconomy_Essentials.Instance.Configuration.NewBalanceMsg, balk.ToString(), u.Configuration.MoneyName));
             }
@@ -109,6 +112,7 @@ namespace Uconomy_Essentials
                     }
                 }
                 decimal bal = Uconomy.Instance.Database.IncreaseBalance(this.PlayerInstance.CSteamID, pay);
+                Uconomy_Essentials.HandleEvent(this.PlayerInstance, pay, "paid");
                 RocketChatManager.Say(this.PlayerInstance.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.PayTimeMsg, pay, Uconomy.Instance.Configuration.MoneyName, paygroup));
                 if (bal >= 0.0m) RocketChatManager.Say(this.PlayerInstance.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.NewBalanceMsg, bal, Uconomy.Instance.Configuration.MoneyName));
             }
