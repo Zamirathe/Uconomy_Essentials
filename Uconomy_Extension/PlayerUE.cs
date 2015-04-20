@@ -16,7 +16,7 @@ namespace Uconomy_Essentials
         private DateTime lastpaid;
         private RocketPlayerEvents rpe;
 
-        protected void Load()
+        protected void Start()
         {
             this.rpe = base.gameObject.transform.GetComponent<RocketPlayerEvents>();
             this.lastpaid = DateTime.Now;
