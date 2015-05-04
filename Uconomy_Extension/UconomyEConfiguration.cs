@@ -9,22 +9,23 @@ namespace Uconomy_Essentials
         public bool PayTime;
         public List<Group> PayGroups;
         public ushort PayTimeSeconds;
-        public string PayTimeMsg;
-        public string UnableToPayGroupMsg;
         public bool PayHit;
         public float PayHitAmt;
-        public string ToKillerMsg;
+        public bool SendPayHitMsg;
         public bool LoseSuicide;
         public float LoseSuicideAmt;
-        public string LoseSuicideMsg;
         public bool ExpExchange;
         public float ExpExchangerate;
-        public string NewBalanceMsg;
+        public bool MoneyExchange;
+        public float MoneyExchangerate;
         public bool LoseMoneyOnDeath;
         public float LoseMoneyOnDeathAmt;
-        public string LoseMoneyonDeathMsg;
-        public string APayMsg;
-        public string APaidMsg;
+        public bool PayZombie;
+        public float PayZombieAmt;
+        public bool SendPayZombieMsg;
+        public bool PayMegaZombie;
+        public float PayMegaZombieAmt;
+        public bool SendPayMegaZombieMsg;
 
 
         public RocketConfiguration DefaultConfiguration
@@ -41,22 +42,23 @@ namespace Uconomy_Essentials
                         new Group{DisplayName = "guest", Salary = 1.0m}
                     },
                     PayTimeSeconds = 900,
-                    PayTimeMsg = "You have received {0} {1} in salary for being a {2}.",
-                    UnableToPayGroupMsg = "Unable to pay {0} as no {1} group salary set.",
                     PayHit = false,
                     PayHitAmt = 1.0f,
-                    ToKillerMsg = "You have received {0} {1} for killing {2}.",
+                    SendPayHitMsg = true,
                     LoseSuicide = false,
                     LoseSuicideAmt = 1.0f,
-                    LoseSuicideMsg = "You have had {0} {1} deducted from your account for committing suicide.",
                     ExpExchange = false,
                     ExpExchangerate = 0.5f,
-                    NewBalanceMsg = "Your new balance is {0} {1}.",
+                    MoneyExchange = false,
+                    MoneyExchangerate = 0.5f,
                     LoseMoneyOnDeath = false,
                     LoseMoneyOnDeathAmt = 10.0f,
-                    LoseMoneyonDeathMsg = "You have lost {0} {1} for being killed.",
-                    APayMsg = "You have paid {0} {1} {2}.",
-                    APaidMsg = "{0} gave you {1} {2}. You now have {3} {4}."
+                    PayZombie = false,
+                    PayZombieAmt = 0.5f,
+                    SendPayZombieMsg = true,
+                    PayMegaZombie = false,
+                    PayMegaZombieAmt = 5.0f,
+                    SendPayMegaZombieMsg = true
                 };
             }
         }

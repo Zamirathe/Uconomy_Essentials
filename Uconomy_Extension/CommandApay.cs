@@ -35,7 +35,7 @@ namespace Uconomy_Essentials
             string message;
             if (string.IsNullOrEmpty(msg))
             {
-                message = "Usage: /apay <player name or id>/<amt>";
+                message = Uconomy_Essentials.Instance.Translate("apay_usage_msg", new object[] {});
                 // We are going to print how to use
                 RocketChatManager.Say(playerid, message);
                 return;
@@ -43,7 +43,7 @@ namespace Uconomy_Essentials
             string[] command = Parser.getComponentsFromSerial(msg, '/');
             if (command.Length != 2)
             {
-                message = "Usage: /apay <player name or id>/<amt>";
+                message = Uconomy_Essentials.Instance.Translate("apay_usage_msg", new object[] { });
                 // Print how to use
                 RocketChatManager.Say(playerid, message);
                 return;
@@ -55,7 +55,7 @@ namespace Uconomy_Essentials
                 ulong.TryParse(command[0], out id);
                 if (!((CSteamID)id).IsValid())
                 {
-                    message = command[0] + " is not a valid player name or steam id.";
+                    message = Uconomy_Essentials.Instance.Translate("not_valid_player_msg", new object[] {command[0]});
                     RocketChatManager.Say(playerid, message);
                     return;
                 }
@@ -69,13 +69,13 @@ namespace Uconomy_Essentials
             uint.TryParse(command[1], out amt);
             if (amt <= 0)
             {
-                message = command[1] + " is not a correct amount.";
+                message = Uconomy_Essentials.Instance.Translate("not_valid_amount", new object[] { command[1] });
                 RocketChatManager.Say(playerid, message);
                 return;
             }
             decimal newbal = Uconomy.Instance.Database.IncreaseBalance(rp.CSteamID, amt);
-            RocketChatManager.Say(rp.CSteamID, String.Format(Uconomy_Essentials.Instance.Configuration.APaidMsg, playerid.CharacterName, amt, Uconomy.Instance.Configuration.MoneyName, newbal, Uconomy.Instance.Configuration.MoneyName));
-            RocketChatManager.Say(playerid, String.Format(Uconomy_Essentials.Instance.Configuration.APayMsg, rp.CharacterName, amt, Uconomy.Instance.Configuration.MoneyName));
+            RocketChatManager.Say(rp.CSteamID, Uconomy_Essentials.Instance.Translate("apaid_msg", new object[] {playerid.CharacterName, amt, Uconomy.Instance.Configuration.MoneyName, newbal, Uconomy.Instance.Configuration.MoneyName}));
+            RocketChatManager.Say(playerid, Uconomy_Essentials.Instance.Translate("apay_msg", new object[] {rp.CharacterName, amt, Uconomy.Instance.Configuration.MoneyName}));
             Uconomy_Essentials.HandleEvent(rp, amt, "paid");
         }
     }
