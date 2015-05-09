@@ -30,29 +30,28 @@ namespace Uconomy_Essentials
                 return "Exchanges experience for economy currency.";
             }
         }
-        public void Execute(RocketPlayer playerid, string amt)
+        public void Execute(RocketPlayer playerid, string[] amt)
         {
             string message;
-            if (string.IsNullOrEmpty(amt))
+            if (amt.Length == 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_usage_msg", new object[] { });
                 RocketChatManager.Say(playerid, message);
                 return;
             }
-            string[] components0 = Parser.getComponentsFromSerial(amt, '/');
-            if (components0.Length > 2)
+            if (amt.Length > 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_usage_msg", new object[] { });
                 RocketChatManager.Say(playerid, message);
                 return;
             }
-            if (!Uconomy_Essentials.Instance.Configuration.ExpExchange && components0.Length == 1)
+            if (!Uconomy_Essentials.Instance.Configuration.ExpExchange && amt.Length == 1)
             {
                 message = Uconomy_Essentials.Instance.Translate("experience_exchange_not_available", new object[] { });
                 RocketChatManager.Say(playerid, message);
                 return;
             }
-            if (!Uconomy_Essentials.Instance.Configuration.MoneyExchange && components0.Length == 2)
+            if (!Uconomy_Essentials.Instance.Configuration.MoneyExchange && amt.Length == 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("money_exchange_not_available", new object[] { });
                 RocketChatManager.Say(playerid, message);
@@ -61,14 +60,14 @@ namespace Uconomy_Essentials
             // Get expereience balance first
             uint exp = playerid.Experience;
             uint examt = 0;
-            UInt32.TryParse(components0[0], out examt);
+            UInt32.TryParse(amt[0], out examt);
             if (examt <= 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_zero_amount_error", new object[] { });
                 RocketChatManager.Say(playerid, message);
                 return;
             }
-            if (exp < examt && components0.Length == 1)
+            if (exp < examt && amt.Length == 1)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_insufficient_experience", new object[] { examt.ToString() });
                 RocketChatManager.Say(playerid, message);
@@ -76,13 +75,13 @@ namespace Uconomy_Essentials
             }
             // Get balance first
             decimal bal = Uconomy.Instance.Database.GetBalance(playerid.CSteamID);
-            if (components0.Length > 1 && bal < examt)
+            if (amt.Length > 1 && bal < examt)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_insufficient_money", new object[] { examt.ToString(), Uconomy.Instance.Configuration.MoneyName });
                 RocketChatManager.Say(playerid, message);
                 return;
             }
-            switch (components0.Length)
+            switch (amt.Length)
             {
                 case 1:
                     decimal gain = (decimal)((float)examt * Uconomy_Essentials.Instance.Configuration.ExpExchangerate);

@@ -89,11 +89,11 @@ namespace Uconomy_Essentials
                     },
                     {
                         "apay_usage_msg",
-                        "Usage: /apay <player name or id>/<amt>"
+                        "Usage: /apay <player name or id> <amt>"
                     },
                     {
                         "exchange_usage_msg",
-                        "Usage: /exchange <amount>[/money] (including /money will exchange money to xp otherwise defaults xp to money)"
+                        "Usage: /exchange <amount>[ money] (including money will exchange money to xp otherwise defaults xp to money)"
                     },
                     {
                         "not_valid_player_msg",

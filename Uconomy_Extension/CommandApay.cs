@@ -30,32 +30,31 @@ namespace Uconomy_Essentials
                 return "Allows an allowed person to pay someone else not using their own currency.";
             }
         }
-        public void Execute(RocketPlayer playerid, string msg)
+        public void Execute(RocketPlayer playerid, string[] msg)
         {
             string message;
-            if (string.IsNullOrEmpty(msg))
+            if (msg.Length == 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("apay_usage_msg", new object[] {});
                 // We are going to print how to use
                 RocketChatManager.Say(playerid, message);
                 return;
             }
-            string[] command = Parser.getComponentsFromSerial(msg, '/');
-            if (command.Length != 2)
+            if (msg.Length != 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("apay_usage_msg", new object[] { });
                 // Print how to use
                 RocketChatManager.Say(playerid, message);
                 return;
             }
-            RocketPlayer rp = RocketPlayer.FromName(command[0]);
+            RocketPlayer rp = RocketPlayer.FromName(msg[0]);
             if (rp == null)
             {
                 ulong id;
-                ulong.TryParse(command[0], out id);
+                ulong.TryParse(msg[0], out id);
                 if (!((CSteamID)id).IsValid())
                 {
-                    message = Uconomy_Essentials.Instance.Translate("not_valid_player_msg", new object[] {command[0]});
+                    message = Uconomy_Essentials.Instance.Translate("not_valid_player_msg", new object[] {msg[0]});
                     RocketChatManager.Say(playerid, message);
                     return;
                 }
@@ -66,10 +65,10 @@ namespace Uconomy_Essentials
                 
             }
             uint amt;
-            uint.TryParse(command[1], out amt);
+            uint.TryParse(msg[1], out amt);
             if (amt <= 0)
             {
-                message = Uconomy_Essentials.Instance.Translate("not_valid_amount", new object[] { command[1] });
+                message = Uconomy_Essentials.Instance.Translate("not_valid_amount", new object[] { msg[1] });
                 RocketChatManager.Say(playerid, message);
                 return;
             }
