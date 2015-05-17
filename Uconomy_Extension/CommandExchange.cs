@@ -1,6 +1,8 @@
 ﻿using System;
-using Rocket.RocketAPI;
-using Rocket.Logging;
+using Rocket.API;
+using Rocket.Unturned;
+using Rocket.Unturned.Commands;
+using Rocket.Unturned.Player;
 using unturned.ROCKS.Uconomy;
 using SDG;
 using Steamworks;
@@ -36,25 +38,25 @@ namespace Uconomy_Essentials
             if (amt.Length == 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_usage_msg", new object[] { });
-                RocketChatManager.Say(playerid, message);
+                RocketChat.Say(playerid, message);
                 return;
             }
             if (amt.Length > 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_usage_msg", new object[] { });
-                RocketChatManager.Say(playerid, message);
+                RocketChat.Say(playerid, message);
                 return;
             }
             if (!Uconomy_Essentials.Instance.Configuration.ExpExchange && amt.Length == 1)
             {
                 message = Uconomy_Essentials.Instance.Translate("experience_exchange_not_available", new object[] { });
-                RocketChatManager.Say(playerid, message);
+                RocketChat.Say(playerid, message);
                 return;
             }
             if (!Uconomy_Essentials.Instance.Configuration.MoneyExchange && amt.Length == 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("money_exchange_not_available", new object[] { });
-                RocketChatManager.Say(playerid, message);
+                RocketChat.Say(playerid, message);
                 return;
             }
             // Get expereience balance first
@@ -64,13 +66,13 @@ namespace Uconomy_Essentials
             if (examt <= 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_zero_amount_error", new object[] { });
-                RocketChatManager.Say(playerid, message);
+                RocketChat.Say(playerid, message);
                 return;
             }
             if (exp < examt && amt.Length == 1)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_insufficient_experience", new object[] { examt.ToString() });
-                RocketChatManager.Say(playerid, message);
+                RocketChat.Say(playerid, message);
                 return;
             }
             // Get balance first
@@ -78,7 +80,7 @@ namespace Uconomy_Essentials
             if (amt.Length > 1 && bal < examt)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_insufficient_money", new object[] { examt.ToString(), Uconomy.Instance.Configuration.MoneyName });
-                RocketChatManager.Say(playerid, message);
+                RocketChat.Say(playerid, message);
                 return;
             }
             switch (amt.Length)
@@ -89,7 +91,7 @@ namespace Uconomy_Essentials
                     gain = Decimal.Round(gain, 2);
                     decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID, gain);
                     message = Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { newbal.ToString(), Uconomy.Instance.Configuration.MoneyName });
-                    RocketChatManager.Say(playerid, message);
+                    RocketChat.Say(playerid, message);
                     playerid.Experience -= examt;
                     Uconomy_Essentials.HandleEvent(playerid, gain, "exchange", examt);
                     break;
@@ -98,7 +100,7 @@ namespace Uconomy_Essentials
                     // Just to make sure to avoid any errors
                     newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID, (examt * -1.0m));
                     message = Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { newbal.ToString(), Uconomy.Instance.Configuration.MoneyName });
-                    RocketChatManager.Say(playerid, message);
+                    RocketChat.Say(playerid, message);
                     playerid.Experience += gainm;
                     Uconomy_Essentials.HandleEvent(playerid, gainm, "exchange", examt, "money");
                     break;

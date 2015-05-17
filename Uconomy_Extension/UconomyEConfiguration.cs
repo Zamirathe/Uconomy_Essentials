@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Rocket.RocketAPI;
+using Rocket.API;
 
 namespace Uconomy_Essentials
 {
-    public class UconomyEConfiguration : IRocketConfiguration
+    public class UconomyEConfiguration : IRocketPluginConfiguration
     {
         public bool PayTime;
         public List<Group> PayGroups;
@@ -28,7 +28,7 @@ namespace Uconomy_Essentials
         public bool SendPayMegaZombieMsg;
 
 
-        public IRocketConfiguration DefaultConfiguration
+        public IRocketPluginConfiguration DefaultConfiguration
         {
             get
             {

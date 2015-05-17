@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using Rocket.Components;
-using Rocket.RocketAPI.Events;
-using Rocket.RocketAPI;
-using Rocket.Logging;
+using Rocket.API;
+using Rocket.Core;
+using Rocket.Unturned;
+using Rocket.Unturned.Events;
+using Rocket.Unturned.Logging;
+using Rocket.Unturned.Player;
 using SDG;
 using UnityEngine;
 using Steamworks;
@@ -40,8 +42,8 @@ namespace Uconomy_Essentials
                     if (bal + loss < 0.0m) loss = bal * -1.0m;
                     decimal bal1 = u.Database.IncreaseBalance(player.CSteamID, loss);
                     Uconomy_Essentials.HandleEvent(player, (loss * -1.0m), "loss");
-                    RocketChatManager.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("lose_suicide_msg", new object[] {Uconomy_Essentials.Instance.Configuration.LoseSuicideAmt, u.Configuration.MoneyName}));
-                    if (bal1 != 0m) RocketChatManager.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] {bal1, u.Configuration.MoneyName}));
+                    RocketChat.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("lose_suicide_msg", new object[] {Uconomy_Essentials.Instance.Configuration.LoseSuicideAmt, u.Configuration.MoneyName}));
+                    if (bal1 != 0m) RocketChat.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] {bal1, u.Configuration.MoneyName}));
                     return;
                 }
                 else if (cause == EDeathCause.SUICIDE && !Uconomy_Essentials.Instance.Configuration.LoseSuicide)
@@ -55,14 +57,14 @@ namespace Uconomy_Essentials
                     if (bal + loss < 0.0m) loss = bal * -1.0m;
                     decimal lostbal = u.Database.IncreaseBalance(player.CSteamID, loss);
                     Uconomy_Essentials.HandleEvent(player, (loss * -1.0m), "loss");
-                    RocketChatManager.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("lose_money_on_death_msg", new object[] {Uconomy_Essentials.Instance.Configuration.LoseMoneyOnDeathAmt.ToString(), u.Configuration.MoneyName}));
+                    RocketChat.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("lose_money_on_death_msg", new object[] {Uconomy_Essentials.Instance.Configuration.LoseMoneyOnDeathAmt.ToString(), u.Configuration.MoneyName}));
                 }
                 // Pay the other player for the kill
                 decimal balk = u.Database.IncreaseBalance(murderer, (decimal)Uconomy_Essentials.Instance.Configuration.PayHitAmt);
                 Uconomy_Essentials.HandleEvent(player, (decimal)Uconomy_Essentials.Instance.Configuration.PayHitAmt, "paid");
                 if (!Uconomy_Essentials.Instance.Configuration.SendPayHitMsg) return; // No message is to be sent, so job is done.
-                RocketChatManager.Say(murderer, Uconomy_Essentials.Instance.Translate("to_killer_msg", new object[] {Uconomy_Essentials.Instance.Configuration.PayHitAmt.ToString(), u.Configuration.MoneyName, player.CharacterName}));
-                if (bal != 0m) RocketChatManager.Say(murderer, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] {balk.ToString(), u.Configuration.MoneyName}));
+                RocketChat.Say(murderer, Uconomy_Essentials.Instance.Translate("to_killer_msg", new object[] {Uconomy_Essentials.Instance.Configuration.PayHitAmt.ToString(), u.Configuration.MoneyName, player.CharacterName}));
+                if (bal != 0m) RocketChat.Say(murderer, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] {balk.ToString(), u.Configuration.MoneyName}));
             }
         }
         private void rpe_OnUpdateStat(RocketPlayer player, EPlayerStat stat)
@@ -74,14 +76,14 @@ namespace Uconomy_Essentials
                 decimal balzk = u.Database.IncreaseBalance(player.CSteamID, (decimal)Uconomy_Essentials.Instance.Configuration.PayZombieAmt);
                 Uconomy_Essentials.HandleEvent(player, (decimal)Uconomy_Essentials.Instance.Configuration.PayZombieAmt, "paid");
                 if (!Uconomy_Essentials.Instance.Configuration.SendPayZombieMsg) return; // No message is to be sent, so job is done.
-                RocketChatManager.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("zombie_kill_paid_msg", new object[] { Uconomy_Essentials.Instance.Configuration.PayZombieAmt.ToString(), u.Configuration.MoneyName, balzk.ToString(), u.Configuration.MoneyName }));
+                RocketChat.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("zombie_kill_paid_msg", new object[] { Uconomy_Essentials.Instance.Configuration.PayZombieAmt.ToString(), u.Configuration.MoneyName, balzk.ToString(), u.Configuration.MoneyName }));
             }
             else if (Uconomy_Essentials.Instance.Configuration.PayMegaZombie && stat == EPlayerStat.KILLS_ZOMBIES_MEGA)
             {
                 decimal balzk = u.Database.IncreaseBalance(player.CSteamID, (decimal)Uconomy_Essentials.Instance.Configuration.PayMegaZombieAmt);
                 Uconomy_Essentials.HandleEvent(player, (decimal)Uconomy_Essentials.Instance.Configuration.PayMegaZombieAmt, "paid");
                 if (!Uconomy_Essentials.Instance.Configuration.SendPayMegaZombieMsg) return; // No message is to be sent, so job is done.
-                RocketChatManager.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("mega_zombie_kill_paid_msg", new object[] { Uconomy_Essentials.Instance.Configuration.PayMegaZombieAmt.ToString(), u.Configuration.MoneyName, balzk.ToString(), u.Configuration.MoneyName }));
+                RocketChat.Say(player.CSteamID, Uconomy_Essentials.Instance.Translate("mega_zombie_kill_paid_msg", new object[] { Uconomy_Essentials.Instance.Configuration.PayMegaZombieAmt.ToString(), u.Configuration.MoneyName, balzk.ToString(), u.Configuration.MoneyName }));
             }
         }
         private void FixedUpdate()
@@ -108,9 +110,9 @@ namespace Uconomy_Essentials
                     else
                     {
                         // They aren't admin so we'll just go through like groups like normal.
-                        List<Rocket.RocketAPI.Group> plgroups = this.Player.GetGroups(true);
+                        List<Rocket.Core.Permissions.Group> plgroups = this.Player.GetGroups(true);
                         decimal pay2 = 0.0m;
-                        foreach (Rocket.RocketAPI.Group s in plgroups)
+                        foreach (Rocket.Core.Permissions.Group s in plgroups)
                         {
                             Uconomy_Essentials.Instance.PayGroups.TryGetValue(s.Id, out pay2);
                             if (pay2 > pay)
@@ -134,8 +136,8 @@ namespace Uconomy_Essentials
                 }
                 decimal bal = Uconomy.Instance.Database.IncreaseBalance(this.Player.CSteamID, pay);
                 Uconomy_Essentials.HandleEvent(this.Player, pay, "paid");
-                RocketChatManager.Say(this.Player.CSteamID, Uconomy_Essentials.Instance.Translate("pay_time_msg", new object[] {pay, Uconomy.Instance.Configuration.MoneyName, paygroup}));
-                if (bal >= 0.0m) RocketChatManager.Say(this.Player.CSteamID, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { bal, Uconomy.Instance.Configuration.MoneyName }));
+                RocketChat.Say(this.Player.CSteamID, Uconomy_Essentials.Instance.Translate("pay_time_msg", new object[] {pay, Uconomy.Instance.Configuration.MoneyName, paygroup}));
+                if (bal >= 0.0m) RocketChat.Say(this.Player.CSteamID, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { bal, Uconomy.Instance.Configuration.MoneyName }));
             }
         }
     }
