@@ -95,20 +95,20 @@ namespace Uconomy_Essentials
                 if (pay == 0.0m)
                 {
                     // We are checking for the different groups as All is not set.
-                    if (this.PlayerInstance.IsAdmin && Uconomy_Essentials.Instance.PayGroups.ContainsKey("admin"))
+                    if (this.Player.IsAdmin && Uconomy_Essentials.Instance.PayGroups.ContainsKey("admin"))
                     {
                         Uconomy_Essentials.Instance.PayGroups.TryGetValue("admin", out pay);
                         paygroup = "admin";
                         if (pay == 0.0m)
                         {
-                            Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.PlayerInstance.CharacterName, "admin"}));
+                            Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.Player.CharacterName, "admin"}));
                             return;
                         }
                     }
                     else
                     {
                         // They aren't admin so we'll just go through like groups like normal.
-                        List<Rocket.RocketAPI.Group> plgroups = this.PlayerInstance.Groups;
+                        List<Rocket.RocketAPI.Group> plgroups = this.Player.GetGroups(true);
                         decimal pay2 = 0.0m;
                         foreach (Rocket.RocketAPI.Group s in plgroups)
                         {
@@ -126,16 +126,16 @@ namespace Uconomy_Essentials
                             if (pay == 0.0m)
                             {
                                 // There was an error.  End it.
-                                Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.PlayerInstance.CharacterName, ""}));
+                                Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.Player.CharacterName, ""}));
                                 return;
                             }
                         }
                     }
                 }
-                decimal bal = Uconomy.Instance.Database.IncreaseBalance(this.PlayerInstance.CSteamID, pay);
-                Uconomy_Essentials.HandleEvent(this.PlayerInstance, pay, "paid");
-                RocketChatManager.Say(this.PlayerInstance.CSteamID, Uconomy_Essentials.Instance.Translate("pay_time_msg", new object[] {pay, Uconomy.Instance.Configuration.MoneyName, paygroup}));
-                if (bal >= 0.0m) RocketChatManager.Say(this.PlayerInstance.CSteamID, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { bal, Uconomy.Instance.Configuration.MoneyName }));
+                decimal bal = Uconomy.Instance.Database.IncreaseBalance(this.Player.CSteamID, pay);
+                Uconomy_Essentials.HandleEvent(this.Player, pay, "paid");
+                RocketChatManager.Say(this.Player.CSteamID, Uconomy_Essentials.Instance.Translate("pay_time_msg", new object[] {pay, Uconomy.Instance.Configuration.MoneyName, paygroup}));
+                if (bal >= 0.0m) RocketChatManager.Say(this.Player.CSteamID, Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { bal, Uconomy.Instance.Configuration.MoneyName }));
             }
         }
     }

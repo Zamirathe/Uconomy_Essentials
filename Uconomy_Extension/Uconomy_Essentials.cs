@@ -23,6 +23,10 @@ namespace Uconomy_Essentials
                 }
             }
         }
+        protected override void Unload()
+        {
+            Uconomy_Essentials.Instance.PayGroups.Clear();
+        }
         public delegate void PlayerPaidEvent(RocketPlayer player, decimal amount);
         public event PlayerPaidEvent OnPlayerPaid;
         public delegate void PlayerLossEvent(RocketPlayer player, decimal amount);
