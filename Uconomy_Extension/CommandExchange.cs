@@ -32,6 +32,13 @@ namespace Uconomy_Essentials
                 return "Exchanges experience for economy currency.";
             }
         }
+        public string Syntax
+        {
+            get
+            {
+                return "<amount> [money]";
+            }
+        }
         public void Execute(RocketPlayer playerid, string[] amt)
         {
             string message;

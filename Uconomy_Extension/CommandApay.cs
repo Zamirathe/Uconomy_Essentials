@@ -32,6 +32,13 @@ namespace Uconomy_Essentials
                 return "Allows an allowed person to pay someone else not using their own currency.";
             }
         }
+        public string Syntax
+        {
+            get
+            {
+                return "<player name or id> <amt>";
+            }
+        }
         public void Execute(RocketPlayer playerid, string[] msg)
         {
             string message;
