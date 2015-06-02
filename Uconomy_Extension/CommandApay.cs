@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Rocket.API;
 using Rocket.Unturned;
 using Rocket.Unturned.Commands;
@@ -38,6 +39,10 @@ namespace Uconomy_Essentials
             {
                 return "<player name or id> <amt>";
             }
+        }
+        public List<string> Aliases
+        {
+            get { return new List<string>(); }
         }
         public void Execute(RocketPlayer playerid, string[] msg)
         {
