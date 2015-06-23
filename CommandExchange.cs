@@ -5,7 +5,7 @@ using Rocket.Unturned;
 using Rocket.Unturned.Commands;
 using Rocket.Unturned.Player;
 using unturned.ROCKS.Uconomy;
-using SDG;
+using SDG.Unturned;
 using Steamworks;
 
 namespace Uconomy_Essentials
