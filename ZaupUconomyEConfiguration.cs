@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Rocket.API;
 
 namespace Uconomy_Essentials
@@ -28,39 +29,33 @@ namespace Uconomy_Essentials
         public bool SendPayMegaZombieMsg;
 
 
-        public IRocketPluginConfiguration DefaultConfiguration
+        public UconomyEConfiguration()
         {
-            get
-            {
-                return new UconomyEConfiguration()
-                {
-                    PayTime = false,
-                    PayGroups = new List<Group>() {
-                        new Group{DisplayName = "all", Salary = 1.0m},
-                        new Group{DisplayName = "admin", Salary = 5.0m},
-                        new Group{DisplayName = "moderator", Salary = 4.0m},
-                        new Group{DisplayName = "guest", Salary = 1.0m}
-                    },
-                    PayTimeSeconds = 900,
-                    PayHit = false,
-                    PayHitAmt = 1.0f,
-                    SendPayHitMsg = true,
-                    LoseSuicide = false,
-                    LoseSuicideAmt = 1.0f,
-                    ExpExchange = false,
-                    ExpExchangerate = 0.5f,
-                    MoneyExchange = false,
-                    MoneyExchangerate = 0.5f,
-                    LoseMoneyOnDeath = false,
-                    LoseMoneyOnDeathAmt = 10.0f,
-                    PayZombie = false,
-                    PayZombieAmt = 0.5f,
-                    SendPayZombieMsg = true,
-                    PayMegaZombie = false,
-                    PayMegaZombieAmt = 5.0f,
-                    SendPayMegaZombieMsg = true
-                };
-            }
+            PayTime = false;
+            PayGroups = new List<Group>() {
+                new Group{DisplayName = "all", Salary = 1.0m},
+                new Group{DisplayName = "admin", Salary = 5.0m},
+                new Group{DisplayName = "moderator", Salary = 4.0m},
+                new Group{DisplayName = "guest", Salary = 1.0m}
+            };
+            PayTimeSeconds = 900;
+            PayHit = false;
+            PayHitAmt = 1.0f;
+            SendPayHitMsg = true;
+            LoseSuicide = false;
+            LoseSuicideAmt = 1.0f;
+            ExpExchange = false;
+            ExpExchangerate = 0.5f;
+            MoneyExchange = false;
+            MoneyExchangerate = 0.5f;
+            LoseMoneyOnDeath = false;
+            LoseMoneyOnDeathAmt = 10.0f;
+            PayZombie = false;
+            PayZombieAmt = 0.5f;
+            SendPayZombieMsg = true;
+            PayMegaZombie = false;
+            PayMegaZombieAmt = 5.0f;
+            SendPayMegaZombieMsg = true;
         }
     }
 }

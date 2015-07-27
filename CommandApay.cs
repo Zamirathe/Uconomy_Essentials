@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Rocket.API;
 using Rocket.Unturned;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Commands;
 using Rocket.Unturned.Player;
 using unturned.ROCKS.Uconomy;
@@ -12,7 +14,7 @@ namespace Uconomy_Essentials
 {
     public class CommandApay : IRocketCommand
     {
-        public bool RunFromConsole
+        public bool AllowFromConsole
         {
             get
             {
@@ -44,24 +46,29 @@ namespace Uconomy_Essentials
         {
             get { return new List<string>(); }
         }
-        public void Execute(RocketPlayer playerid, string[] msg)
+        public List<string> Permissions
         {
+            get { return new List<string>(); }
+        }
+        public void Execute(IRocketPlayer caller, string[] msg)
+        {
+            UnturnedPlayer playerid = (UnturnedPlayer)caller;
             string message;
             if (msg.Length == 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("apay_usage_msg", new object[] {});
                 // We are going to print how to use
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
             if (msg.Length != 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("apay_usage_msg", new object[] { });
                 // Print how to use
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
-            RocketPlayer rp = RocketPlayer.FromName(msg[0]);
+            UnturnedPlayer rp = UnturnedPlayer.FromName(msg[0]);
             if (rp == null)
             {
                 ulong id;
@@ -69,12 +76,12 @@ namespace Uconomy_Essentials
                 if (!((CSteamID)id).IsValid())
                 {
                     message = Uconomy_Essentials.Instance.Translate("not_valid_player_msg", new object[] {msg[0]});
-                    RocketChat.Say(playerid, message);
+                    UnturnedChat.Say(playerid, message);
                     return;
                 }
                 else
                 {
-                    rp = RocketPlayer.FromCSteamID((CSteamID)id);
+                    rp = UnturnedPlayer.FromCSteamID((CSteamID)id);
                 }
                 
             }
@@ -83,12 +90,12 @@ namespace Uconomy_Essentials
             if (amt <= 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("not_valid_amount", new object[] { msg[1] });
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
-            decimal newbal = Uconomy.Instance.Database.IncreaseBalance(rp.CSteamID, amt);
-            RocketChat.Say(rp.CSteamID, Uconomy_Essentials.Instance.Translate("apaid_msg", new object[] {playerid.CharacterName, amt, Uconomy.Instance.Configuration.MoneyName, newbal, Uconomy.Instance.Configuration.MoneyName}));
-            RocketChat.Say(playerid, Uconomy_Essentials.Instance.Translate("apay_msg", new object[] {rp.CharacterName, amt, Uconomy.Instance.Configuration.MoneyName}));
+            decimal newbal = Uconomy.Instance.Database.IncreaseBalance(rp.CSteamID.ToString(), amt);
+            UnturnedChat.Say(rp.CSteamID, Uconomy_Essentials.Instance.Translate("apaid_msg", new object[] {playerid.CharacterName, amt, Uconomy.Instance.Configuration.Instance.MoneyName, newbal, Uconomy.Instance.Configuration.Instance.MoneyName}));
+            UnturnedChat.Say(playerid, Uconomy_Essentials.Instance.Translate("apay_msg", new object[] {rp.CharacterName, amt, Uconomy.Instance.Configuration.Instance.MoneyName}));
             Uconomy_Essentials.HandleEvent(rp, amt, "paid");
         }
     }

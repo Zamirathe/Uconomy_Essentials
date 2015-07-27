@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Rocket.API;
+using Rocket.API.Collections;
+using Rocket.Core.Logging;
+using Rocket.Core.Plugins;
 using Rocket.Unturned;
-using Rocket.Unturned.Logging;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Plugins;
 using SDG.Unturned;
@@ -18,9 +21,9 @@ namespace Uconomy_Essentials
 
         protected override void Load() {
             Uconomy_Essentials.Instance = this;
-            if (Loaded)
+            if (this.State == PluginState.Loaded)
             {
-                foreach (Group g in this.Configuration.PayGroups)
+                foreach (Group g in this.Configuration.Instance.PayGroups)
                 {
                     this.PayGroups.Add(g.DisplayName, g.Salary);
                 }
@@ -30,17 +33,17 @@ namespace Uconomy_Essentials
         {
             Uconomy_Essentials.Instance.PayGroups.Clear();
         }
-        public delegate void PlayerPaidEvent(RocketPlayer player, decimal amount);
+        public delegate void PlayerPaidEvent(UnturnedPlayer player, decimal amount);
         public event PlayerPaidEvent OnPlayerPaid;
-        public delegate void PlayerLossEvent(RocketPlayer player, decimal amount);
+        public delegate void PlayerLossEvent(UnturnedPlayer player, decimal amount);
         public event PlayerLossEvent OnPlayerLoss;
-        public delegate void PlayerExchangeEvent(RocketPlayer player, decimal currency, uint experience, string type);
+        public delegate void PlayerExchangeEvent(UnturnedPlayer player, decimal currency, uint experience, string type);
         public event PlayerExchangeEvent OnPlayerExchange;
-        public override Dictionary<string, string> DefaultTranslations
+        public override TranslationList DefaultTranslations
         {
             get
             {
-                return new Dictionary<string, string>
+                return new TranslationList
                 {
                     {
                         "pay_time_msg", 
@@ -122,7 +125,7 @@ namespace Uconomy_Essentials
             }
         }
 
-        public static void HandleEvent(RocketPlayer player, decimal amount, string eventtype, uint exp = 0, string type = "experience")
+        public static void HandleEvent(UnturnedPlayer player, decimal amount, string eventtype, uint exp = 0, string type = "experience")
         {
             if (eventtype == "exchange" && exp <= 0)
             {

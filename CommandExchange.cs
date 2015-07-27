@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using Rocket.API;
 using Rocket.Unturned;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Commands;
 using Rocket.Unturned.Player;
 using unturned.ROCKS.Uconomy;
@@ -12,7 +14,7 @@ namespace Uconomy_Essentials
 {
     public class CommandExchange : IRocketCommand
     {
-        public bool RunFromConsole
+        public bool AllowFromConsole
         {
             get
             {
@@ -44,31 +46,36 @@ namespace Uconomy_Essentials
         {
             get { return new List<string>(); }
         }
-        public void Execute(RocketPlayer playerid, string[] amt)
+        public List<string> Permissions
         {
+            get { return new List<string>(); }
+        }
+        public void Execute(IRocketPlayer caller, string[] amt)
+        {
+            UnturnedPlayer playerid = (UnturnedPlayer)caller;
             string message;
             if (amt.Length == 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_usage_msg", new object[] { });
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
             if (amt.Length > 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_usage_msg", new object[] { });
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
-            if (!Uconomy_Essentials.Instance.Configuration.ExpExchange && amt.Length == 1)
+            if (!Uconomy_Essentials.Instance.Configuration.Instance.ExpExchange && amt.Length == 1)
             {
                 message = Uconomy_Essentials.Instance.Translate("experience_exchange_not_available", new object[] { });
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
-            if (!Uconomy_Essentials.Instance.Configuration.MoneyExchange && amt.Length == 2)
+            if (!Uconomy_Essentials.Instance.Configuration.Instance.MoneyExchange && amt.Length == 2)
             {
                 message = Uconomy_Essentials.Instance.Translate("money_exchange_not_available", new object[] { });
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
             // Get expereience balance first
@@ -78,41 +85,41 @@ namespace Uconomy_Essentials
             if (examt <= 0)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_zero_amount_error", new object[] { });
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
             if (exp < examt && amt.Length == 1)
             {
                 message = Uconomy_Essentials.Instance.Translate("exchange_insufficient_experience", new object[] { examt.ToString() });
-                RocketChat.Say(playerid, message);
+                UnturnedChat.Say(playerid, message);
                 return;
             }
             // Get balance first
-            decimal bal = Uconomy.Instance.Database.GetBalance(playerid.CSteamID);
+            decimal bal = Uconomy.Instance.Database.GetBalance(playerid.CSteamID.ToString());
             if (amt.Length > 1 && bal < examt)
             {
-                message = Uconomy_Essentials.Instance.Translate("exchange_insufficient_money", new object[] { examt.ToString(), Uconomy.Instance.Configuration.MoneyName });
-                RocketChat.Say(playerid, message);
+                message = Uconomy_Essentials.Instance.Translate("exchange_insufficient_money", new object[] { examt.ToString(), Uconomy.Instance.Configuration.Instance.MoneyName });
+                UnturnedChat.Say(playerid, message);
                 return;
             }
             switch (amt.Length)
             {
                 case 1:
-                    decimal gain = (decimal)((float)examt * Uconomy_Essentials.Instance.Configuration.ExpExchangerate);
+                    decimal gain = (decimal)((float)examt * Uconomy_Essentials.Instance.Configuration.Instance.ExpExchangerate);
                     // Just to make sure to avoid any errors
                     gain = Decimal.Round(gain, 2);
-                    decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID, gain);
-                    message = Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { newbal.ToString(), Uconomy.Instance.Configuration.MoneyName });
-                    RocketChat.Say(playerid, message);
+                    decimal newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID.ToString(), gain);
+                    message = Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { newbal.ToString(), Uconomy.Instance.Configuration.Instance.MoneyName });
+                    UnturnedChat.Say(playerid, message);
                     playerid.Experience -= examt;
                     Uconomy_Essentials.HandleEvent(playerid, gain, "exchange", examt);
                     break;
                 case 2:
-                    uint gainm = (uint)((float)examt * Uconomy_Essentials.Instance.Configuration.MoneyExchangerate);
+                    uint gainm = (uint)((float)examt * Uconomy_Essentials.Instance.Configuration.Instance.MoneyExchangerate);
                     // Just to make sure to avoid any errors
-                    newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID, (examt * -1.0m));
-                    message = Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { newbal.ToString(), Uconomy.Instance.Configuration.MoneyName });
-                    RocketChat.Say(playerid, message);
+                    newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID.ToString(), (examt * -1.0m));
+                    message = Uconomy_Essentials.Instance.Translate("new_balance_msg", new object[] { newbal.ToString(), Uconomy.Instance.Configuration.Instance.MoneyName });
+                    UnturnedChat.Say(playerid, message);
                     playerid.Experience += gainm;
                     Uconomy_Essentials.HandleEvent(playerid, gainm, "exchange", examt, "money");
                     break;
