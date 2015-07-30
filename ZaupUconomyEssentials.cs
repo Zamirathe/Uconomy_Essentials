@@ -21,12 +21,20 @@ namespace Uconomy_Essentials
 
         protected override void Load() {
             Uconomy_Essentials.Instance = this;
-            if (this.State == PluginState.Loaded)
+            List<Group> nlgroup = this.Configuration.Instance.PayGroups.Distinct( new GroupComparer()).ToList();
+            this.Configuration.Instance.PayGroups = nlgroup;
+            foreach (Group g in this.Configuration.Instance.PayGroups)
             {
-                foreach (Group g in this.Configuration.Instance.PayGroups)
+                try
                 {
                     this.PayGroups.Add(g.DisplayName, g.Salary);
                 }
+                catch (Exception e)
+                {
+                    //Logger.Log(g.DisplayName + " " + g.Salary.ToString());
+                    //Logger.Log("There was an exception: " + e);
+                }
+                
             }
         }
         protected override void Unload()

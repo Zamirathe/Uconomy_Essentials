@@ -119,7 +119,9 @@ namespace Uconomy_Essentials
                         decimal pay2 = 0.0m;
                         foreach (RocketPermissionsGroup s in plgroups)
                         {
+                            Logger.Log(s.Id);
                             Uconomy_Essentials.Instance.PayGroups.TryGetValue(s.Id, out pay2);
+                            Logger.Log(pay2.ToString());
                             if (pay2 > pay)
                             {
                                 pay = pay2;

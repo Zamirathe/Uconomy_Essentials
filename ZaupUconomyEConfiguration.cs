@@ -8,7 +8,12 @@ namespace Uconomy_Essentials
     public class UconomyEConfiguration : IRocketPluginConfiguration
     {
         public bool PayTime;
-        public List<Group> PayGroups;
+        public List<Group> PayGroups = new List<Group>() {
+                new Group{DisplayName = "all", Salary = 1.0m},
+                new Group{DisplayName = "admin", Salary = 5.0m},
+                new Group{DisplayName = "moderator", Salary = 4.0m},
+                new Group{DisplayName = "guest", Salary = 1.0m}
+            };
         public ushort PayTimeSeconds;
         public bool PayHit;
         public float PayHitAmt;
@@ -32,12 +37,6 @@ namespace Uconomy_Essentials
         public UconomyEConfiguration()
         {
             PayTime = false;
-            PayGroups = new List<Group>() {
-                new Group{DisplayName = "all", Salary = 1.0m},
-                new Group{DisplayName = "admin", Salary = 5.0m},
-                new Group{DisplayName = "moderator", Salary = 4.0m},
-                new Group{DisplayName = "guest", Salary = 1.0m}
-            };
             PayTimeSeconds = 900;
             PayHit = false;
             PayHitAmt = 1.0f;
