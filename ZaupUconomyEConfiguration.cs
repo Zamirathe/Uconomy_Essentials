@@ -9,7 +9,7 @@ namespace Uconomy_Essentials
     {
         public bool PayTime;
         public List<Group> PayGroups;
-        public ushort PayTimeSeconds;
+        public int PayTimeSeconds;
         public bool PayHit;
         public float PayHitAmt;
         public bool SendPayHitMsg;

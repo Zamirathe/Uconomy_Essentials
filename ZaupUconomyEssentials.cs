@@ -31,6 +31,7 @@ namespace Uconomy_Essentials
                 }
                 catch (Exception e)
                 {
+                    Logger.LogException(e);
                     //Logger.Log(g.DisplayName + " " + g.Salary.ToString());
                     //Logger.Log("There was an exception: " + e);
                 }
