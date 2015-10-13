@@ -6,7 +6,7 @@ using Rocket.Unturned;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Commands;
 using Rocket.Unturned.Player;
-using unturned.ROCKS.Uconomy;
+using fr34kyn01535.Uconomy;
 using SDG.Unturned;
 using Steamworks;
 
