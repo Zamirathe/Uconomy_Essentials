@@ -6,9 +6,9 @@ using Rocket.Unturned;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Commands;
 using Rocket.Unturned.Player;
-using unturned.ROCKS.Uconomy;
 using SDG.Unturned;
 using Steamworks;
+using fr34kyn01535.Uconomy;
 
 namespace Uconomy_Essentials
 {
@@ -124,7 +124,7 @@ namespace Uconomy_Essentials
                     Uconomy_Essentials.HandleEvent(playerid, gainm, "exchange", examt, "money");
                     break;
             }
-            playerid.Player.SteamChannel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
+            playerid.Player.SteamChannel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_RELIABLE_BUFFER, new object[]
 		    {
 			    playerid.Experience
 		    });

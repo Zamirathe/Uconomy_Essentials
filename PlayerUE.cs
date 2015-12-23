@@ -12,8 +12,8 @@ using Rocket.Unturned.Player;
 using SDG.Unturned;
 using UnityEngine;
 using Steamworks;
-using unturned.ROCKS.Uconomy;
 using Rocket.API.Serialisation;
+using fr34kyn01535.Uconomy;
 
 namespace Uconomy_Essentials
 {

@@ -6,9 +6,9 @@ using Rocket.Unturned;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Commands;
 using Rocket.Unturned.Player;
-using unturned.ROCKS.Uconomy;
 using SDG.Unturned;
 using Steamworks;
+using fr34kyn01535.Uconomy;
 
 namespace Uconomy_Essentials
 {
