@@ -10,6 +10,7 @@ using Rocket.Unturned;
 using Rocket.Unturned.Player;
 using Rocket.Unturned.Plugins;
 using SDG.Unturned;
+using fr34kyn01535.Uconomy;
 
 namespace Uconomy_Essentials
 {
