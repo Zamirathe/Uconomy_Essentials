@@ -107,7 +107,7 @@ namespace Uconomy_Essentials
                         paygroup = "admin";
                         if (pay == 0.0m)
                         {
-                            Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.Player.CharacterName, "admin"}));
+                            Rocket.Core.Logging.Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.Player.CharacterName, "admin"}));
                             return;
                         }
                     }
@@ -119,9 +119,9 @@ namespace Uconomy_Essentials
                         decimal pay2 = 0.0m;
                         foreach (RocketPermissionsGroup s in plgroups)
                         {
-                            Logger.Log(s.Id);
+                            Rocket.Core.Logging.Logger.Log(s.Id);
                             Uconomy_Essentials.Instance.PayGroups.TryGetValue(s.Id, out pay2);
-                            Logger.Log(pay2.ToString());
+                            Rocket.Core.Logging.Logger.Log(pay2.ToString());
                             if (pay2 > pay)
                             {
                                 pay = pay2;
@@ -135,7 +135,7 @@ namespace Uconomy_Essentials
                             if (pay == 0.0m)
                             {
                                 // There was an error.  End it.
-                                Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.Player.CharacterName, ""}));
+                                Rocket.Core.Logging.Logger.Log(Uconomy_Essentials.Instance.Translate("unable_to_pay_group_msg", new object[] {this.Player.CharacterName, ""}));
                                 return;
                             }
                         }

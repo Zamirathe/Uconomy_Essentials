@@ -125,7 +125,7 @@ namespace Uconomy_Essentials
                     Uconomy_Essentials.HandleEvent(playerid, gainm, "exchange", examt, "money");
                     break;
             }
-            playerid.Player.SteamChannel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_RELIABLE_BUFFER, new object[]
+            playerid.Player.channel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_RELIABLE_BUFFER, new object[]
 		    {
 			    playerid.Experience
 		    });
