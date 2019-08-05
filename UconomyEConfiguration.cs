@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-
+﻿using System.Collections.Generic;
 using Rocket.API;
 
-namespace Uconomy_Essentials
+namespace ZaupUconomyEssentials
 {
     public class UconomyEConfiguration : IRocketPluginConfiguration
     {
@@ -32,11 +30,12 @@ namespace Uconomy_Essentials
         public void LoadDefaults()
         {
             PayTime = false;
-            PayGroups = new List<Group>() {
-                new Group{DisplayName = "all", Salary = 1.0m},
-                new Group{DisplayName = "admin", Salary = 5.0m},
-                new Group{DisplayName = "moderator", Salary = 4.0m},
-                new Group{DisplayName = "guest", Salary = 1.0m}
+            PayGroups = new List<Group>
+            {
+                new Group {DisplayName = "all", Salary = 1.0m},
+                new Group {DisplayName = "admin", Salary = 5.0m},
+                new Group {DisplayName = "moderator", Salary = 4.0m},
+                new Group {DisplayName = "guest", Salary = 1.0m}
             };
             PayTimeSeconds = 900;
             PayHit = false;
