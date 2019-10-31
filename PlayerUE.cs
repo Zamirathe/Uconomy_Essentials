@@ -44,10 +44,13 @@ namespace ZaupUconomyEssentials
                 var bal1 = u.Database.IncreaseBalance(player.CSteamID.ToString(), loss);
                 UconomyEssentials.HandleEvent(player, loss * -1.0m, "loss");
                 UnturnedChat.Say(player.CSteamID,
-                    UconomyEssentials.Instance.Translate("lose_suicide_msg", UconomyEssentials.Instance.Configuration.Instance.LoseSuicideAmt, u.Configuration.Instance.MoneyName));
+                    UconomyEssentials.Instance.Translate("lose_suicide_msg",
+                        UconomyEssentials.Instance.Configuration.Instance.LoseSuicideAmt,
+                        u.Configuration.Instance.MoneyName));
                 if (bal1 != 0m)
                     UnturnedChat.Say(player.CSteamID,
-                        UconomyEssentials.Instance.Translate("new_balance_msg", bal1, u.Configuration.Instance.MoneyName));
+                        UconomyEssentials.Instance.Translate("new_balance_msg", bal1,
+                            u.Configuration.Instance.MoneyName));
                 return;
             }
 
@@ -63,7 +66,9 @@ namespace ZaupUconomyEssentials
                 u.Database.IncreaseBalance(player.CSteamID.ToString(), loss);
                 UconomyEssentials.HandleEvent(player, loss * -1.0m, "loss");
                 UnturnedChat.Say(player.CSteamID,
-                    UconomyEssentials.Instance.Translate("lose_money_on_death_msg", UconomyEssentials.Instance.Configuration.Instance.LoseMoneyOnDeathAmt, u.Configuration.Instance.MoneyName));
+                    UconomyEssentials.Instance.Translate("lose_money_on_death_msg",
+                        UconomyEssentials.Instance.Configuration.Instance.LoseMoneyOnDeathAmt,
+                        u.Configuration.Instance.MoneyName));
             }
 
             // Pay the other player for the kill
@@ -75,7 +80,9 @@ namespace ZaupUconomyEssentials
                 return; // No message is to be sent, so job is done.
 
             UnturnedChat.Say(murderer,
-                UconomyEssentials.Instance.Translate("to_killer_msg", UconomyEssentials.Instance.Configuration.Instance.PayHitAmt, u.Configuration.Instance.MoneyName, player.CharacterName));
+                UconomyEssentials.Instance.Translate("to_killer_msg",
+                    UconomyEssentials.Instance.Configuration.Instance.PayHitAmt, u.Configuration.Instance.MoneyName,
+                    player.CharacterName));
             if (bal != 0m)
                 UnturnedChat.Say(murderer,
                     UconomyEssentials.Instance.Translate("new_balance_msg", balk, u.Configuration.Instance.MoneyName));
@@ -97,7 +104,9 @@ namespace ZaupUconomyEssentials
                     return; // No message is to be sent, so job is done.
 
                 UnturnedChat.Say(player.CSteamID,
-                    UconomyEssentials.Instance.Translate("zombie_kill_paid_msg", UconomyEssentials.Instance.Configuration.Instance.PayZombieAmt, u.Configuration.Instance.MoneyName, balzk, u.Configuration.Instance.MoneyName));
+                    UconomyEssentials.Instance.Translate("zombie_kill_paid_msg",
+                        UconomyEssentials.Instance.Configuration.Instance.PayZombieAmt,
+                        u.Configuration.Instance.MoneyName, balzk, u.Configuration.Instance.MoneyName));
             }
             else if (UconomyEssentials.Instance.Configuration.Instance.PayMegaZombie &&
                      stat == EPlayerStat.KILLS_ZOMBIES_MEGA)
@@ -110,7 +119,9 @@ namespace ZaupUconomyEssentials
                     return; // No message is to be sent, so job is done.
 
                 UnturnedChat.Say(player.CSteamID,
-                    UconomyEssentials.Instance.Translate("mega_zombie_kill_paid_msg", UconomyEssentials.Instance.Configuration.Instance.PayMegaZombieAmt, u.Configuration.Instance.MoneyName, balzk, u.Configuration.Instance.MoneyName));
+                    UconomyEssentials.Instance.Translate("mega_zombie_kill_paid_msg",
+                        UconomyEssentials.Instance.Configuration.Instance.PayMegaZombieAmt,
+                        u.Configuration.Instance.MoneyName, balzk, u.Configuration.Instance.MoneyName));
             }
         }
 
@@ -161,7 +172,8 @@ namespace ZaupUconomyEssentials
                         {
                             // There was an error.  End it.
                             Logger.Log(
-                                UconomyEssentials.Instance.Translate("unable_to_pay_group_msg", Player.CharacterName, ""));
+                                UconomyEssentials.Instance.Translate("unable_to_pay_group_msg", Player.CharacterName,
+                                    ""));
                             return;
                         }
                     }
@@ -171,10 +183,12 @@ namespace ZaupUconomyEssentials
             var bal = Uconomy.Instance.Database.IncreaseBalance(Player.CSteamID.ToString(), pay);
             UconomyEssentials.HandleEvent(Player, pay, "paid");
             UnturnedChat.Say(Player.CSteamID,
-                UconomyEssentials.Instance.Translate("pay_time_msg", pay, Uconomy.Instance.Configuration.Instance.MoneyName, paygroup));
+                UconomyEssentials.Instance.Translate("pay_time_msg", pay,
+                    Uconomy.Instance.Configuration.Instance.MoneyName, paygroup));
             if (bal >= 0.0m)
                 UnturnedChat.Say(Player.CSteamID,
-                    UconomyEssentials.Instance.Translate("new_balance_msg", bal, Uconomy.Instance.Configuration.Instance.MoneyName));
+                    UconomyEssentials.Instance.Translate("new_balance_msg", bal,
+                        Uconomy.Instance.Configuration.Instance.MoneyName));
         }
     }
 }

@@ -65,9 +65,12 @@ namespace ZaupUconomyEssentials
 
             var newbal = Uconomy.Instance.Database.IncreaseBalance(rp.CSteamID.ToString(), amt);
             UnturnedChat.Say(rp.CSteamID,
-                UconomyEssentials.Instance.Translate("apaid_msg", playerid.CharacterName, amt, Uconomy.Instance.Configuration.Instance.MoneyName, newbal, Uconomy.Instance.Configuration.Instance.MoneyName));
+                UconomyEssentials.Instance.Translate("apaid_msg", playerid.CharacterName, amt,
+                    Uconomy.Instance.Configuration.Instance.MoneyName, newbal,
+                    Uconomy.Instance.Configuration.Instance.MoneyName));
             UnturnedChat.Say(playerid,
-                UconomyEssentials.Instance.Translate("apay_msg", rp.CharacterName, amt, Uconomy.Instance.Configuration.Instance.MoneyName));
+                UconomyEssentials.Instance.Translate("apay_msg", rp.CharacterName, amt,
+                    Uconomy.Instance.Configuration.Instance.MoneyName));
             UconomyEssentials.HandleEvent(rp, amt, "paid");
         }
     }

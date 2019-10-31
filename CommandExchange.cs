@@ -74,7 +74,8 @@ namespace ZaupUconomyEssentials
             var bal = Uconomy.Instance.Database.GetBalance(playerid.CSteamID.ToString());
             if (amt.Length > 1 && bal < examt)
             {
-                message = UconomyEssentials.Instance.Translate("exchange_insufficient_money", examt.ToString(), Uconomy.Instance.Configuration.Instance.MoneyName);
+                message = UconomyEssentials.Instance.Translate("exchange_insufficient_money", examt.ToString(),
+                    Uconomy.Instance.Configuration.Instance.MoneyName);
                 UnturnedChat.Say(playerid, message);
                 return;
             }
@@ -87,7 +88,8 @@ namespace ZaupUconomyEssentials
                     // Just to make sure to avoid any errors
                     gain = decimal.Round(gain, 2);
                     var newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID.ToString(), gain);
-                    message = UconomyEssentials.Instance.Translate("new_balance_msg", newbal, Uconomy.Instance.Configuration.Instance.MoneyName);
+                    message = UconomyEssentials.Instance.Translate("new_balance_msg", newbal,
+                        Uconomy.Instance.Configuration.Instance.MoneyName);
                     UnturnedChat.Say(playerid, message);
                     playerid.Experience -= examt;
                     UconomyEssentials.HandleEvent(playerid, gain, "exchange", examt);
@@ -97,14 +99,16 @@ namespace ZaupUconomyEssentials
                                         UconomyEssentials.Instance.Configuration.Instance.MoneyExchangerate);
                     // Just to make sure to avoid any errors
                     newbal = Uconomy.Instance.Database.IncreaseBalance(playerid.CSteamID.ToString(), examt * -1.0m);
-                    message = UconomyEssentials.Instance.Translate("new_balance_msg", newbal, Uconomy.Instance.Configuration.Instance.MoneyName);
+                    message = UconomyEssentials.Instance.Translate("new_balance_msg", newbal,
+                        Uconomy.Instance.Configuration.Instance.MoneyName);
                     UnturnedChat.Say(playerid, message);
                     playerid.Experience += gainm;
                     UconomyEssentials.HandleEvent(playerid, gainm, "exchange", examt, "money");
                     break;
             }
 
-            playerid.Player.channel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_RELIABLE_BUFFER, playerid.Experience);
+            playerid.Player.channel.send("tellExperience", ESteamCall.OWNER, ESteamPacket.UPDATE_RELIABLE_BUFFER,
+                playerid.Experience);
         }
     }
 }
