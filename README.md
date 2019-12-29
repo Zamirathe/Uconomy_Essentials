@@ -6,4 +6,4 @@ Allow players to exchange their experience for currency.
 Give players currency every time they kill a player.  Great for pvp servers!
 Take away currency if a player clicks suicide.
 
-All of these options are configurable and can be turned on and off independently.
+All of these options are configurable and can be turned on and off independently. 
